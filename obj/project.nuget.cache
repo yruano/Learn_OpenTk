@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "SFMC/mNFGoP7oAgmqbS4rEE+V3tn6gF1XlIwwmengDbkdKtI7XN/Trj/pqKGxloJuXYHeD0qm17oPj9L3avBTg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ckrmi\\OneDrive\\바탕 화면\\codes\\OpenTk\\BasicOpenTK.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk\\4.7.4\\opentk.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.compute\\4.7.4\\opentk.compute.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.core\\4.7.4\\opentk.core.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.graphics\\4.7.4\\opentk.graphics.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.input\\4.7.4\\opentk.input.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.mathematics\\4.7.4\\opentk.mathematics.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.openal\\4.7.4\\opentk.openal.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.redist.glfw\\3.3.7.27\\opentk.redist.glfw.3.3.7.27.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.windowing.common\\4.7.4\\opentk.windowing.common.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.windowing.desktop\\4.7.4\\opentk.windowing.desktop.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\4.7.4\\opentk.windowing.graphicslibraryframework.4.7.4.nupkg.sha512",
+    "C:\\Users\\ckrmi\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

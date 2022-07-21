@@ -1,0 +1,5 @@
+C:\Users\ckrmi\OneDrive\바탕 화면\codes\OpenTk\obj\Debug\net6.0\OpenTk.csproj.AssemblyReference.cache
+C:\Users\ckrmi\OneDrive\바탕 화면\codes\OpenTk\obj\Debug\net6.0\OpenTk.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ckrmi\OneDrive\바탕 화면\codes\OpenTk\obj\Debug\net6.0\OpenTk.AssemblyInfoInputs.cache
+C:\Users\ckrmi\OneDrive\바탕 화면\codes\OpenTk\obj\Debug\net6.0\OpenTk.AssemblyInfo.cs
+C:\Users\ckrmi\OneDrive\바탕 화면\codes\OpenTk\obj\Debug\net6.0\OpenTk.csproj.CoreCompileInputs.cache
