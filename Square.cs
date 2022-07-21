@@ -31,12 +31,17 @@ namespace BasicOpenTk
         {
             GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
 
+            float x = 384f;
+            float y = 400f;
+            float w = 512f;
+            float h = 256f;
+
             float[] vertices = new float[]
             {
-                /* vertex0 */  -0.5f,  0.5f, 0f, /* color0 (R) */ 1.0f, 0.0f, 0.0f,
-                /* vertex1 */   0.5f,  0.5f, 0f, /* color1 (G) */ 0.0f, 1.0f, 0.0f,
-                /* vertex2 */   0.5f, -0.5f, 0f, /* color2 (B) */ 0.0f, 0.0f, 1.0f,
-                /* vertex3 */  -0.5f, -0.5f, 0f, /* color3 (y) */ 1.0f, 1.0f, 0.0f,
+                /* vertex0 */  x    , y + h, 0f, /* color0 (R) */ 1.0f, 0.0f, 0.0f,
+                /* vertex1 */  x + w, y + h, 0f, /* color1 (G) */ 0.0f, 1.0f, 0.0f,
+                /* vertex2 */  x + w, y    , 0f, /* color2 (B) */ 0.0f, 0.0f, 1.0f,
+                /* vertex3 */  x    , y    , 0f, /* color3 (y) */ 1.0f, 1.0f, 0.0f,
             };
 
             uint[] indices = new uint[]
@@ -66,14 +71,21 @@ namespace BasicOpenTk
 
             string vertexShaderCode = @"
                 #version 330 core
+
+                uniform vec2 ViewportSize;
                 
                 layout (location = 0) in vec3 aPosition;
                 layout (location = 1) in vec3 aColor;
+                
                 out vec3 color;
                 
                 void main()
                 {
-                    gl_Position = vec4(aPosition, 1f);
+                    float nx = aPosition.x / ViewportSize.x * 2f - 1f;
+                    float ny = aPosition.y / ViewportSize.y * 2f - 1f;
+                    
+                    gl_Position = vec4(nx, ny, 0f, 1f);
+                    
                     color = aColor;
                 }
             ";
@@ -95,9 +107,23 @@ namespace BasicOpenTk
             GL.ShaderSource(vertexShaderHandle, vertexShaderCode);
             GL.CompileShader(vertexShaderHandle);
 
+            // vertexShader 프로그래밍 오류를 출력함
+            string vertexShaderInfo = GL.GetShaderInfoLog(vertexShaderHandle);
+            if (vertexShaderInfo != String.Empty)
+            {
+                Console.WriteLine(vertexShaderInfo);
+            }
+
             int pixelShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(pixelShaderHandle, pixelShaderCode);
             GL.CompileShader(pixelShaderHandle);
+
+            // pixelShader 프로그래밍 오류를 출력함
+            string pixelShaderInfo = GL.GetShaderInfoLog(pixelShaderHandle);
+            if (pixelShaderInfo != String.Empty)
+            {
+                Console.WriteLine(pixelShaderInfo);
+            }
 
             this.shaderprogramHandle = GL.CreateProgram();
 
@@ -111,6 +137,15 @@ namespace BasicOpenTk
 
             GL.DeleteShader(vertexShaderHandle);
             GL.DeleteShader(pixelShaderHandle);
+
+            // 화면크기를 가져옴
+            int[] viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
+
+            GL.UseProgram(this.shaderprogramHandle);
+            int viewportSizeUniformLocation = GL.GetUniformLocation(this.shaderprogramHandle, "ViewportSize");
+            GL.Uniform2(viewportSizeUniformLocation, (float)viewport[2], (float)viewport[3]);
+            GL.UseProgram(0);
 
             base.OnLoad();
         }
