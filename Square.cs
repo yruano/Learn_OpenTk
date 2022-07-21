@@ -8,13 +8,14 @@ using OpenTK.Mathematics;
 
 namespace BasicOpenTk
 {
-    public class Game : GameWindow
+    public class Square : GameWindow
     {
         private int vertexBufferHandle;
         private int shaderprogramHandle;
         private int vertexArrayHandle;
+        private int indexBufferHandle;
 
-        public Game()
+        public Square()
             : base(GameWindowSettings.Default, NativeWindowSettings.Default)
         {
             this.CenterWindow(new Vector2i(1280, 768));
@@ -28,40 +29,40 @@ namespace BasicOpenTk
 
         protected override void OnLoad()
         {
-            // 최적화에 필요 뒷면을 안그림, 속을 안 채움
-            // GL.Enable(EnableCap.CullFace);
-            // GL.CullFace(CullFaceMode.Back);
-            // GL.FrontFace(FrontFaceDirection.Cw);
-
             GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
 
             float[] vertices = new float[]
             {
-                /* vertex0 */  0.0f,  0.5f, 0f, /* color0 (R) */ 1.0f, 0.0f, 0.0f,
-                /* vertex1 */  0.5f, -0.5f, 0f, /* color1 (G) */ 0.0f, 1.0f, 0.0f,
-                /* vertex2 */ -0.5f, -0.5f, 0f, /* color2 (B) */ 0.0f, 0.0f, 1.0f,
+                /* vertex0 */  -0.5f,  0.5f, 0f, /* color0 (R) */ 1.0f, 0.0f, 0.0f,
+                /* vertex1 */   0.5f,  0.5f, 0f, /* color1 (G) */ 0.0f, 1.0f, 0.0f,
+                /* vertex2 */   0.5f, -0.5f, 0f, /* color2 (B) */ 0.0f, 0.0f, 1.0f,
+                /* vertex3 */  -0.5f, -0.5f, 0f, /* color3 (y) */ 1.0f, 1.0f, 0.0f,
             };
 
-            this.vertexBufferHandle = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, this.vertexBufferHandle);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            uint[] indices = new uint[]
+            {
+                0, 1, 2, 0, 2, 3
+            };
 
             this.vertexArrayHandle = GL.GenVertexArray();
             GL.BindVertexArray(this.vertexArrayHandle);
 
-            // 알아두자
-            // vertex array == vao
-            // vertex buffer == vbo
-            // -- index buffer (element array buffer) == ibo (ebo)
-
+            this.vertexBufferHandle = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.vertexBufferHandle);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
 
+            this.indexBufferHandle = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, this.indexBufferHandle);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+
             GL.BindVertexArray(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
 
             string vertexShaderCode = @"
                 #version 330 core
@@ -119,6 +120,9 @@ namespace BasicOpenTk
             GL.BindVertexArray(0);
             GL.DeleteVertexArray(this.vertexArrayHandle);
 
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+            GL.DeleteBuffer(this.indexBufferHandle);
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.DeleteBuffer(this.vertexBufferHandle);
 
@@ -139,7 +143,7 @@ namespace BasicOpenTk
 
             GL.UseProgram(this.shaderprogramHandle);
             GL.BindVertexArray(this.vertexArrayHandle);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
 
             this.Context.SwapBuffers();
             base.OnRenderFrame(args);
