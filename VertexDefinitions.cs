@@ -59,4 +59,22 @@ namespace BasicOpenTk
             this.Color = color;
         }
     }
+
+    public readonly struct VertexPositionTexture
+    {
+        public readonly Vector2 Position;
+        public readonly Vector2 TexCoord;
+
+        public static readonly VertexInfo VertexInfo = new VertexInfo(
+            typeof(VertexPositionTexture),
+            new VertexAttribute("Position", 0 ,2, 0),
+            new VertexAttribute("TexCoord", 1, 2, 2 * sizeof(float))
+        );
+
+        public VertexPositionTexture(Vector2 position, Vector2 texCoord)
+        {
+            this.Position = position;
+            this.TexCoord = texCoord;
+        }
+    }
 }
