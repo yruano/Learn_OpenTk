@@ -17,7 +17,7 @@ namespace BasicOpenTk
         public Game(int width = 1280, int height = 768, string title = "Triangle")
             : base(
                 GameWindowSettings.Default,
-                new NativeWindowSettings() 
+                new NativeWindowSettings()
                 {
                     Title = title,
                     Size = new Vector2i(width, height),

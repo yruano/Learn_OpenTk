@@ -10,7 +10,7 @@ namespace BasicOpenTk
         public readonly int Index;
         public readonly int ComponentCount;
         public readonly int Offset;
-        
+
         public VertexAttribute(string name, int index, int componentCount, int offset)
         {
             this.Name = name;
@@ -31,7 +31,7 @@ namespace BasicOpenTk
         {
             this.Type = type;
             this.SizeInBytes = 0;
-            
+
             this.VertexAttributes = attributes;
 
             for (int i = 0; i < this.VertexAttributes.Length; i++)
@@ -67,7 +67,7 @@ namespace BasicOpenTk
 
         public static readonly VertexInfo VertexInfo = new VertexInfo(
             typeof(VertexPositionTexture),
-            new VertexAttribute("Position", 0 ,2, 0),
+            new VertexAttribute("Position", 0, 2, 0),
             new VertexAttribute("TexCoord", 1, 2, 2 * sizeof(float))
         );
 

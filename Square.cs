@@ -18,7 +18,7 @@ namespace BasicOpenTk
         public Square(int width = 1280, int height = 768, string title = "Square")
             : base(
                 GameWindowSettings.Default,
-                new NativeWindowSettings() 
+                new NativeWindowSettings()
                 {
                     Title = title,
                     Size = new Vector2i(width, height),
@@ -83,13 +83,13 @@ namespace BasicOpenTk
             this.indexBufferHandle = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, this.indexBufferHandle);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
-            
+
             VertexAttribute attr0 = VertexPositionColor.vertexInfo.VertexAttributes[0];
             VertexAttribute attr1 = VertexPositionColor.vertexInfo.VertexAttributes[1];
-            
+
             GL.VertexAttribPointer(attr0.Index, attr0.ComponentCount, VertexAttribPointerType.Float, false, vertexSizeInBytes, attr0.Offset);
             GL.VertexAttribPointer(attr1.Index, attr1.ComponentCount, VertexAttribPointerType.Float, false, vertexSizeInBytes, attr1.Offset);
-            
+
             GL.EnableVertexAttribArray(attr0.Index);
             GL.EnableVertexAttribArray(attr1.Index);
 
