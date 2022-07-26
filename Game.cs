@@ -14,10 +14,22 @@ namespace BasicOpenTk
         private int shaderprogramHandle;
         private int vertexArrayHandle;
 
-        public Game()
-            : base(GameWindowSettings.Default, NativeWindowSettings.Default)
+        public Game(int width = 1280, int height = 768, string title = "Triangle")
+            : base(
+                GameWindowSettings.Default,
+                new NativeWindowSettings() 
+                {
+                    Title = title,
+                    Size = new Vector2i(width, height),
+                    StartVisible = false,
+                    StartFocused = true,
+                    API = ContextAPI.OpenGL,
+                    Profile = ContextProfile.Core,
+                    APIVersion = new Version(3, 3)
+
+                })
         {
-            this.CenterWindow(new Vector2i(1280, 768));
+            this.CenterWindow();
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -28,6 +40,8 @@ namespace BasicOpenTk
 
         protected override void OnLoad()
         {
+            this.IsVisible = true;
+
             // 최적화에 필요 뒷면을 안그림, 속을 안 채움
             // GL.Enable(EnableCap.CullFace);
             // GL.CullFace(CullFaceMode.Back);

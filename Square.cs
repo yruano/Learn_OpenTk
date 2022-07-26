@@ -15,10 +15,22 @@ namespace BasicOpenTk
         private int vertexArrayHandle;
         private int indexBufferHandle;
 
-        public Square()
-            : base(GameWindowSettings.Default, NativeWindowSettings.Default)
+        public Square(int width = 1280, int height = 768, string title = "Square")
+            : base(
+                GameWindowSettings.Default,
+                new NativeWindowSettings() 
+                {
+                    Title = title,
+                    Size = new Vector2i(width, height),
+                    StartVisible = false,
+                    StartFocused = true,
+                    API = ContextAPI.OpenGL,
+                    Profile = ContextProfile.Core,
+                    APIVersion = new Version(3, 3)
+
+                })
         {
-            this.CenterWindow(new Vector2i(1280, 768));
+            this.CenterWindow();
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -29,6 +41,8 @@ namespace BasicOpenTk
 
         protected override void OnLoad()
         {
+            this.IsVisible = true;
+
             GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
 
             float x = 384f;
@@ -36,12 +50,20 @@ namespace BasicOpenTk
             float w = 512f;
             float h = 256f;
 
-            float[] vertices = new float[]
+            // float[] vertices = new float[]
+            // {
+            //     /* vertex0 */  x    , y + h, /* color0 (R) */ 1.0f, 0.0f, 0.0f,
+            //     /* vertex1 */  x + w, y + h, /* color1 (G) */ 0.0f, 1.0f, 0.0f,
+            //     /* vertex2 */  x + w, y    , /* color2 (B) */ 0.0f, 0.0f, 1.0f,
+            //     /* vertex3 */  x    , y    , /* color3 (y) */ 1.0f, 1.0f, 0.0f,
+            // };
+
+            VertexPositionColor[] vertices = new VertexPositionColor[]
             {
-                /* vertex0 */  x    , y + h, 0f, /* color0 (R) */ 1.0f, 0.0f, 0.0f,
-                /* vertex1 */  x + w, y + h, 0f, /* color1 (G) */ 0.0f, 1.0f, 0.0f,
-                /* vertex2 */  x + w, y    , 0f, /* color2 (B) */ 0.0f, 0.0f, 1.0f,
-                /* vertex3 */  x    , y    , 0f, /* color3 (y) */ 1.0f, 1.0f, 0.0f,
+                new VertexPositionColor(new Vector2(x, y + h),      new Color4(1f, 0f, 0f, 1f)),
+                new VertexPositionColor(new Vector2(x + w, y + h),  new Color4(0f, 1f, 0f, 1f)),
+                new VertexPositionColor(new Vector2(x + w, y),      new Color4(0f, 0f, 1f, 1f)),
+                new VertexPositionColor(new Vector2(x, y),          new Color4(1f, 1f, 0f, 0f)),
             };
 
             uint[] indices = new uint[]
@@ -49,32 +71,40 @@ namespace BasicOpenTk
                 0, 1, 2, 0, 2, 3
             };
 
+            int vertexSizeInBytes = VertexPositionColor.vertexInfo.SizeInBytes;
+
             this.vertexArrayHandle = GL.GenVertexArray();
             GL.BindVertexArray(this.vertexArrayHandle);
 
             this.vertexBufferHandle = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.vertexBufferHandle);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
-            GL.EnableVertexAttribArray(0);
-            GL.EnableVertexAttribArray(1);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * vertexSizeInBytes, vertices, BufferUsageHint.StaticDraw);
 
             this.indexBufferHandle = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, this.indexBufferHandle);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+            
+            VertexAttribute attr0 = VertexPositionColor.vertexInfo.VertexAttributes[0];
+            VertexAttribute attr1 = VertexPositionColor.vertexInfo.VertexAttributes[1];
+            
+            GL.VertexAttribPointer(attr0.Index, attr0.ComponentCount, VertexAttribPointerType.Float, false, vertexSizeInBytes, attr0.Offset);
+            GL.VertexAttribPointer(attr1.Index, attr1.ComponentCount, VertexAttribPointerType.Float, false, vertexSizeInBytes, attr1.Offset);
+            
+            GL.EnableVertexAttribArray(attr0.Index);
+            GL.EnableVertexAttribArray(attr1.Index);
 
             GL.BindVertexArray(0);
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+
 
             string vertexShaderCode = @"
                 #version 330 core
 
                 uniform vec2 ViewportSize;
                 
-                layout (location = 0) in vec3 aPosition;
+                layout (location = 0) in vec2 aPosition;
                 layout (location = 1) in vec3 aColor;
                 
                 out vec3 color;
