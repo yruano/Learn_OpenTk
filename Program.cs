@@ -10,9 +10,13 @@ namespace BasicOpenTk
             // {
             //     game.Run();
             // }
-            using (Square square = new Square())
+            // using (Square square = new Square())
+            // {
+            //     square.Run();
+            // }
+            using (Boxes boxes = new Boxes())
             {
-                square.Run();
+                boxes.Run();
             }
         }
     }

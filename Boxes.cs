@@ -7,20 +7,17 @@ using OpenTK.Mathematics;
 
 namespace BasicOpenTk
 {
-    public class Square : GameWindow
+    public class Boxes : GameWindow
     {
         private VertexBuffer vertexBuffer;
         private IndexBuffer indexBuffer;
         private VertexArray vertexArray;
         private int shaderprogramHandle;
 
+        private int indexCount;
+        private uint vertexCount;
 
-        private float x = 384f;
-        private float y = 400f;
-        private float w = 512f;
-        private float h = 256f;
-
-        public Square(int width = 1280, int height = 768, string title = "Square")
+        public Boxes(int width = 1280, int height = 768, string title = "Square")
             : base(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
@@ -36,18 +33,47 @@ namespace BasicOpenTk
         {
             this.CenterWindow();
 
-            VertexPositionColor[] vertices = new VertexPositionColor[]
-            {
-                new VertexPositionColor(new Vector2(x, y + h),      new Color4(1f, 0f, 0f, 1f)),
-                new VertexPositionColor(new Vector2(x + w, y + h),  new Color4(0f, 1f, 0f, 1f)),
-                new VertexPositionColor(new Vector2(x + w, y),      new Color4(0f, 0f, 1f, 1f)),
-                new VertexPositionColor(new Vector2(x, y),          new Color4(1f, 1f, 0f, 0f)),
-            };
+            Random rand =  new Random();
 
-            uint[] indices = new uint[]
+
+            int windowWidth = this.ClientSize.X;
+            int windowHeight = this.ClientSize.Y;
+
+            int boxCount = 10;
+
+            VertexPositionColor[] vertices = new VertexPositionColor[boxCount * 4];
+            
+            this.vertexCount = 0;
+
+            for (int i = 0; i < boxCount; i++)
             {
-                0, 1, 2, 0, 2, 3
-            };
+                int w = rand.Next(32, 128);
+                int h = rand.Next(32, 128);
+                int x = rand.Next(0, windowWidth - w);
+                int y = rand.Next(32, windowHeight - h);
+
+                vertices[this.vertexCount++] = new VertexPositionColor(new Vector2(x, y + h),      new Color4(1f, 0f, 0f, 1f));
+                vertices[this.vertexCount++] = new VertexPositionColor(new Vector2(x + w, y + h),  new Color4(0f, 1f, 0f, 1f));
+                vertices[this.vertexCount++] = new VertexPositionColor(new Vector2(x + w, y),      new Color4(0f, 0f, 1f, 1f));
+                vertices[this.vertexCount++] = new VertexPositionColor(new Vector2(x, y),          new Color4(1f, 1f, 0f, 0f));
+            }
+
+            uint[] indices = new uint[boxCount * 6];
+
+            this.indexCount = 0;
+            this.vertexCount = 0;
+
+            for (int i = 0; i < boxCount; i++)
+            {
+                indices[this.indexCount++] = 0 + this.vertexCount;
+                indices[this.indexCount++] = 1 + this.vertexCount;
+                indices[this.indexCount++] = 2 + this.vertexCount;
+                indices[this.indexCount++] = 0 + this.vertexCount;
+                indices[this.indexCount++] = 2 + this.vertexCount;
+                indices[this.indexCount++] = 3 + this.vertexCount;
+
+                this.vertexCount += 4;
+            }
 
             this.vertexBuffer = new VertexBuffer(VertexPositionColor.vertexInfo, vertices.Length, true);
             this.vertexBuffer.SetData(vertices, vertices.Length);
@@ -69,6 +95,7 @@ namespace BasicOpenTk
             this.IsVisible = true;
 
             GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
+
 
             string vertexShaderCode = @"
                 #version 330 core
@@ -175,7 +202,7 @@ namespace BasicOpenTk
             GL.UseProgram(this.shaderprogramHandle);
             GL.BindVertexArray(this.vertexArray.VertexArrayHandle);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, this.indexBuffer.IndexBufferHandle);
-            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, this.indexCount, DrawElementsType.UnsignedInt, 0);
 
             this.Context.SwapBuffers();
             base.OnRenderFrame(args);
