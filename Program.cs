@@ -6,18 +6,18 @@ namespace BasicOpenTk
     {
         static void Main(string[] args)
         {
-            // using (Game game = new Game())
-            // {
-            //     game.Run();
-            // }
+            using (Triangle triangle = new Triangle())
+            {
+                triangle.Run();
+            }
             // using (Square square = new Square())
             // {
             //     square.Run();
             // }
-            using (Boxes boxes = new Boxes())
-            {
-                boxes.Run();
-            }
+            // using (Boxes boxes = new Boxes())
+            // {
+            //     boxes.Run();
+            // }
         }
     }
 }

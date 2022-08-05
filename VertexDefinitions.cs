@@ -20,7 +20,6 @@ namespace BasicOpenTk
         }
     }
 
-
     public sealed class VertexInfo
     {
         public readonly Type Type;
