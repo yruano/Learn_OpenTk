@@ -10,14 +10,21 @@ namespace BasicOpenTk
             // {
             //     triangle.Run();
             // }
-            using (Square square = new Square())
-            {
-                square.Run();
-            }
+            
+            // using (Square square = new Square())
+            // {
+            //     square.Run();
+            // }
+
             // using (Boxes boxes = new Boxes())
             // {
             //     boxes.Run();
             // }
+
+            using (Star star = new Star()) 
+            {
+                star.Run();
+            }
         }
     }
 }

@@ -64,7 +64,7 @@ namespace BasicOpenTk
         public readonly Vector2 Position;
         public readonly Vector2 TexCoord;
 
-        public static readonly VertexInfo VertexInfo = new VertexInfo(
+        public static readonly VertexInfo vertexInfo = new VertexInfo(
             typeof(VertexPositionTexture),
             new VertexAttribute("Position", 0, 2, 0),
             new VertexAttribute("TexCoord", 1, 2, 2 * sizeof(float))
