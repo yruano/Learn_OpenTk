@@ -6,10 +6,10 @@ namespace BasicOpenTk
     {
         static void Main(string[] args)
         {
-            // using (Triangle triangle = new Triangle())
-            // {
-            //     triangle.Run();
-            // }
+            using (Triangle triangle = new Triangle())
+            {
+                triangle.Run();
+            }
             
             // using (Square square = new Square())
             // {
@@ -21,10 +21,10 @@ namespace BasicOpenTk
             //     boxes.Run();
             // }
 
-            using (Star star = new Star()) 
-            {
-                star.Run();
-            }
+            // using (Star star = new Star()) 
+            // {
+            //     star.Run();
+            // }
         }
     }
 }
