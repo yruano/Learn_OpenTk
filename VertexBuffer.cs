@@ -42,7 +42,6 @@ namespace BasicOpenTk
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.VertexBufferHandle);
             GL.BufferData(BufferTarget.ArrayBuffer, this.VertexCount * this.VertexInfo.SizeInBytes, IntPtr.Zero, hint);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
         }
 
         ~VertexBuffer()

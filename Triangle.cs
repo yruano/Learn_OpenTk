@@ -14,6 +14,8 @@ namespace BasicOpenTk
         private VertexArray vertexArray;
         private ShaderProgram shaderProgram;
 
+        private float colorFactor = 1f;
+
         public Triangle(int width = 1280, int height = 768, string title = "Triangle")
             : base(
                 GameWindowSettings.Default,
@@ -35,14 +37,15 @@ namespace BasicOpenTk
 
             GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
 
-            int x = 540;
-            int y = 284;
+            float x = 1280 / 2;
+            float y = 768 / 2;
 
             VertexPositionColor[] vertices = new VertexPositionColor[]
             {
-                new VertexPositionColor(new Vector2(x + 200, y - 200), new Color4(1f, 0f, 0f, 1f)),
-                new VertexPositionColor(new Vector2(x - 200, y - 200), new Color4(1f, 0f, 0f, 1f)),
-                new VertexPositionColor(new Vector2(x      , y - 200), new Color4(1f, 0f, 0f, 1f)),
+                new VertexPositionColor(new Vector2(x + 200, y      ), new Color4(1f, 0f, 0f, 1f)),
+                new VertexPositionColor(new Vector2(x - 200, y      ), new Color4(0f, 1f, 0f, 1f)),
+                new VertexPositionColor(new Vector2(x      , y + 200), new Color4(0f, 0f, 1f, 1f)),
+                
             };
 
 
@@ -76,6 +79,7 @@ namespace BasicOpenTk
                 #version 330 core
 
                 uniform vec2 ViewportSize;
+                uniform float ColorFactor;
 
                 layout (location = 0) in vec2 aPosition;
                 layout (location = 1) in vec3 aColor;
@@ -89,7 +93,7 @@ namespace BasicOpenTk
                     
                     gl_Position = vec4(nx, ny, 0f, 1f);
 
-                    color = aColor;
+                    color = aColor * ColorFactor;
                 }
             ";
 
@@ -107,12 +111,6 @@ namespace BasicOpenTk
 
             this.shaderProgram.InitShaderProgram(vertexShaderCode, pixelShaderCode);
 
-            // 화면크기를 가져옴
-            int[] viewport = new int[4];
-            GL.GetInteger(GetPName.Viewport, viewport);
-
-            this.shaderProgram.SetUniform("ViewportSize", (float)viewport[2], (float)viewport[3]);
-
             base.OnLoad();
         }
 
@@ -126,6 +124,13 @@ namespace BasicOpenTk
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
+            // 화면크기를 가져옴
+            int[] viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
+
+            this.shaderProgram.SetUniform("ViewportSize", (float)viewport[2], (float)viewport[3]);
+            this.shaderProgram.SetUniform("ColorFactor", this.colorFactor);
+
             base.OnUpdateFrame(args);
         }
 

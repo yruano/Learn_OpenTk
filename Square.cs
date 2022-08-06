@@ -99,7 +99,6 @@ namespace BasicOpenTk
 
                 void main()
                 {
-                    // pixelColor = vec4(0.8f, 0.8f, 0.1f, 1f);
                     pixelColor = vec4(color, 1f);
                 }
             ";
