@@ -129,6 +129,7 @@ namespace BasicOpenTk
                 throw new AbandonedMutexException("Uniforms type is not FloatVec2.");
             }
 
+            // Uniform세팅하고 프로그램을 실행하고십어서 이렇게해둔것이다 (유튜브아제)
             GL.UseProgram(this.ShaderprogramHandle);
             GL.Uniform2(uniform.location, v1, v2);
             GL.UseProgram(0);
