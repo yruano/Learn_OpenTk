@@ -152,9 +152,9 @@ namespace BasicOpenTk
 
         protected override void OnUnload()
         {
-            this.vertexArray?.Dispose();
-            this.indexBuffer?.Dispose();
-            this.vertexBuffer?.Dispose();
+            this.vertexArray.Dispose();
+            this.indexBuffer.Dispose();
+            this.vertexBuffer.Dispose();
 
             base.OnUnload();
         }
