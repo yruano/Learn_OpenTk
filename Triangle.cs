@@ -65,16 +65,6 @@ namespace BasicOpenTk
 
         protected override void OnLoad()
         {
-            // 최적화에 필요 뒷면을 안그림, 속을 안 채움
-            // GL.Enable(EnableCap.CullFace);
-            // GL.CullFace(CullFaceMode.Back);
-            // GL.FrontFace(FrontFaceDirection.Cw);
-
-            // 알아두자
-            // vertex array == vao
-            // vertex buffer == vbo
-            // -- index buffer (element array buffer) == ibo (ebo)
-
             string vertexShaderCode = @"
                 #version 330 core
 

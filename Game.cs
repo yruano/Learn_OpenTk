@@ -5,11 +5,13 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
+
 namespace BasicOpenTk
 {
     public abstract class Game
     {
 
+        protected GameWindow? gameWindow;
         protected string WindowTitle { get; set; }
         protected int InitialWindowWidth { get; set; }
         protected int InitialWindowHeight { get; set; }
@@ -29,10 +31,13 @@ namespace BasicOpenTk
 
         public void Run()
         {
-            Initialize();
-            using GameWindow gameWindow = new GameWindow(_gameWindowSettings, _nativeWindowSettings);
+            gameWindow = new GameWindow(_gameWindowSettings, _nativeWindowSettings);
             GameTime gameTime = new();
+
+            Initialize();
+
             gameWindow.Load += LoadContent;
+
             gameWindow.UpdateFrame += (FrameEventArgs eventArgs) =>
             {
                 double time = eventArgs.Time;
@@ -40,17 +45,25 @@ namespace BasicOpenTk
                 gameTime.TotalGameTime += TimeSpan.FromMilliseconds(time);
                 Update(gameTime);
             };
+
             gameWindow.RenderFrame += (FrameEventArgs eventArgs) =>
             {
                 Render(gameTime);
                 gameWindow.SwapBuffers();
             };
+
             gameWindow.Resize += (ResizeEventArgs) => {
                 GL.Viewport(0, 0, gameWindow.Size.X, gameWindow.Size.Y);
-
             };
+
             gameWindow.Run();
         }
+
+        ~Game()
+        {
+            gameWindow!.Dispose();
+        }
+
 
         protected abstract void Initialize();
         protected abstract void LoadContent();

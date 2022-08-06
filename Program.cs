@@ -6,10 +6,10 @@ namespace BasicOpenTk
     {
         static void Main(string[] args)
         {
-            using (Triangle triangle = new Triangle())
-            {
-                triangle.Run();
-            }
+            // using (Triangle triangle = new Triangle())
+            // {
+            //     triangle.Run();
+            // }
             
             // using (Square square = new Square())
             // {
@@ -25,6 +25,8 @@ namespace BasicOpenTk
             // {
             //     star.Run();
             // }
+            Model model = new("Model", 1280, 800);
+            model.Run();
         }
     }
 }
