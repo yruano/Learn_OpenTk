@@ -1,5 +1,3 @@
-using System;
-using OpenTK;
 using OpenTK.Graphics.ES11;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;

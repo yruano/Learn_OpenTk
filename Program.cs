@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BasicOpenTk
+﻿namespace BasicOpenTk
 {
     class Program
     {
