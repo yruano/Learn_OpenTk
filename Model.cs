@@ -1,5 +1,6 @@
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
+using ImGuiNET;
 
 namespace BasicOpenTk
 {
@@ -9,17 +10,17 @@ namespace BasicOpenTk
         private VertexArray? vertexArray;
         private ShaderProgram? shaderProgram;
 
-        public Model(string windowTitle, int initialWindowWidth, int initialWindowHeight) 
-        : base(windowTitle, initialWindowWidth, initialWindowHeight) {}
+        public Model(string windowTitle, int initialWindowWidth, int initialWindowHeight)
+        : base(windowTitle, initialWindowWidth, initialWindowHeight) { }
 
-        protected override void Initialize() {}
+        protected override void Initialize() { }
 
         protected override void LoadContent()
         {
-           GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
+            GL.ClearColor(new Color4(0.3f, 0.4f, 0.5f, 1f));
 
             float x = InitialWindowWidth / 2;
-            float y = InitialWindowHeight /2;
+            float y = InitialWindowHeight / 2;
 
             VertexPositionColor[] vertices = new VertexPositionColor[]
             {
@@ -76,7 +77,6 @@ namespace BasicOpenTk
             // 화면크기를 가져옴
             int[] viewport = new int[4];
             GL.GetInteger(GetPName.Viewport, viewport);
-            
         }
 
         protected override void Render(GameTime gameTime)
@@ -87,6 +87,20 @@ namespace BasicOpenTk
             GL.UseProgram(this.shaderProgram!.ShaderprogramHandle);
             GL.BindVertexArray(this.vertexArray!.VertexArrayHandle);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+
+            ImGui.Begin("Hello");
+
+            if (ImGui.Button("press me"))
+            {
+                Console.WriteLine("나 눌림");
+            }
+
+            if (ImGui.Button("press me2"))
+            {
+                Console.WriteLine("나 눌림2");
+            }
+
+            ImGui.End();
         }
     }
 }

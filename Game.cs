@@ -2,13 +2,13 @@ using OpenTK.Graphics.ES11;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-
+using ImGuiNET;
+using Dear_ImGui_Sample;
 
 namespace BasicOpenTk
 {
     public abstract class Game
     {
-
         protected GameWindow? gameWindow;
         protected string WindowTitle { get; set; }
         protected int InitialWindowWidth { get; set; }
@@ -16,6 +16,8 @@ namespace BasicOpenTk
 
         private GameWindowSettings _gameWindowSettings = GameWindowSettings.Default;
         private NativeWindowSettings _nativeWindowSettings = NativeWindowSettings.Default;
+
+        protected ImGuiController? controller;
 
         public Game(string windowTitle, int initialWindowWidth, int initialWindowHeight)
         {
@@ -34,7 +36,11 @@ namespace BasicOpenTk
 
             Initialize();
 
-            gameWindow.Load += LoadContent;
+            gameWindow.Load += () =>
+            {
+                controller = new ImGuiController(gameWindow.Size.X, gameWindow.Size.Y);
+                LoadContent();
+            };
 
             gameWindow.UpdateFrame += (FrameEventArgs eventArgs) =>
             {
@@ -46,12 +52,26 @@ namespace BasicOpenTk
 
             gameWindow.RenderFrame += (FrameEventArgs eventArgs) =>
             {
+                controller!.Update(gameWindow, (float)eventArgs.Time);
+
                 Render(gameTime);
+                controller!.Render();
                 gameWindow.SwapBuffers();
             };
 
-            gameWindow.Resize += (ResizeEventArgs) => {
+            gameWindow.Resize += (ResizeEventArgs) =>
+            {
                 GL.Viewport(0, 0, gameWindow.Size.X, gameWindow.Size.Y);
+                controller!.WindowResized(gameWindow.Size.X, gameWindow.Size.Y);
+            };
+
+            gameWindow.TextInput += (TextInputEventArgs eventArgs) =>
+            {
+                controller!.PressChar((char)eventArgs.Unicode);
+            };
+            gameWindow.MouseWheel += (MouseWheelEventArgs eventArgs) =>
+            {
+                controller!.MouseScroll(eventArgs.Offset);
             };
 
             gameWindow.Run();
@@ -61,7 +81,6 @@ namespace BasicOpenTk
         {
             gameWindow!.Dispose();
         }
-
 
         protected abstract void Initialize();
         protected abstract void LoadContent();
